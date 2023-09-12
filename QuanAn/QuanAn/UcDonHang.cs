@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,26 +43,70 @@ namespace QuanAn
             //    OrderLv.Items.Add(item);
             //}
         }
-
+        
+        List<Food> uniqueFoodList = new List<Food>();
         public void LoadFood()
         {
             MenuLv.Items.Clear();
+            uniqueFoodList.Clear();
             List<Food> FoodList = FoodDAO.Instance.LoadFoodWithFixedExtras();
-
+            ReadIntegersFromFile();
             foreach (Food food in FoodList)
+            {
+                bool isDuplicate = false;
+                int maMN = food.MaMN;
+                // Kiểm tra xem MaMN của dòng hiện tại có tồn tại trong danh sách
+                if (FoodListDeleted.Contains(maMN))
+                {
+                    isDuplicate = true;
+                }
+
+                // Nếu không trùng lặp, thêm dòng vào danh sách mới
+                if (!isDuplicate)
+                {
+                    uniqueFoodList.Add(food);
+                }
+            }
+
+            foreach (Food food in uniqueFoodList)
             {
                 ListViewItem listViewitem = new ListViewItem(food.Ten_mon.ToString());
                 listViewitem.SubItems.Add(food.Don_gia.ToString());
-
+                
                 MenuLv.Items.Add(listViewitem);
             }
         }
+
+        List<int> FoodListDeleted = new List<int>();
+
+        private void ReadIntegersFromFile()
+        {
+            string filePath = (Application.StartupPath + "\\File\\DeletedFoodList.txt");
+            FoodListDeleted.Clear();
+            try
+            {
+                string[] lines = File.ReadAllLines(filePath);
+
+                foreach (string line in lines)
+                {
+                    if (int.TryParse(line, out int number))
+                    {
+                        FoodListDeleted.Add(number);
+                    }
+                }
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Lỗi đọc tệp: " + ex.Message);
+            }
+        }
+
 
         int GetMaMN(ListViewItem item)
         {
             List<Food> FoodList = FoodDAO.Instance.LoadFoodWithFixedExtras();
 
-            foreach (Food food in FoodList)
+            foreach (Food food in uniqueFoodList)
             {
                 if (item.SubItems[1].Text == food.Ten_mon.ToString())
                 {
@@ -75,7 +120,7 @@ namespace QuanAn
         {
             List<Food> FoodList = FoodDAO.Instance.LoadFoodWithFixedExtras();
 
-            foreach (Food food in FoodList)
+            foreach (Food food in uniqueFoodList)
             {
                 if (FoodNameTb.Text == food.Ten_mon.ToString())
                 {

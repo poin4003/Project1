@@ -63,6 +63,16 @@ namespace QuanAn.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap IMG_6985 {
+            get {
+                object obj = ResourceManager.GetObject("IMG_6985", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Project__2_ {
             get {
                 object obj = ResourceManager.GetObject("Project (2)", resourceCulture);
@@ -76,6 +86,16 @@ namespace QuanAn.Properties {
         internal static System.Drawing.Bitmap Project__2_1 {
             get {
                 object obj = ResourceManager.GetObject("Project (2)1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap z4686022611503_f09ae5b7808494bf34f81a91ff65d208 {
+            get {
+                object obj = ResourceManager.GetObject("z4686022611503_f09ae5b7808494bf34f81a91ff65d208", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

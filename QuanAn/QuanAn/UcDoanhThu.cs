@@ -59,7 +59,6 @@ namespace QuanAn
             }
         }
 
-
         public void LoadOrderByMonth(string month)
         {
             orders = RevenueDAO.Instance.GetOrderListByMonthFiled(month);
@@ -87,7 +86,7 @@ namespace QuanAn
             LoadOrderByDay(formattedDate);
             float revenue = RevenueDAO.Instance.GetTotalRevenueOnDay(formattedDate);
             int countOfOrder = RevenueDAO.Instance.GetCountOfOrderOnDay(formattedDate);
-            NumberOfOrdersTb.Text = countOfOrder.ToString();
+            NumberOfOrdersTb.Text = (countOfOrder - 1).ToString();
             
             if(revenue == -1)
                 MessageBox.Show("Ngày không có doanh thu", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
@@ -102,7 +101,7 @@ namespace QuanAn
             LoadOrderByMonth(formattedDate);
             float revenue = RevenueDAO.Instance.GetTotalRevenueOnMonth(formattedDate);
             int countOfOrder = RevenueDAO.Instance.GetCountOfOrderOnMonth(formattedDate);
-            NumberOfOrdersTb.Text = countOfOrder.ToString();           
+            NumberOfOrdersTb.Text = (countOfOrder - 1).ToString();           
             if (revenue == -1)
                 MessageBox.Show("Tháng không có doanh thu", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
             else
@@ -136,6 +135,7 @@ namespace QuanAn
                         //MessageBox.Show(row["ten_mon"].ToString());
                         ListViewItem ten_mon = new ListViewItem(row["ten_mon"].ToString());
                         ten_mon.SubItems.Add(row["MaMN"].ToString());
+                        //ten_mon.SubItems.Add(row["Soluong"].ToString());
                         FoodListLv.Items.Add(ten_mon);
                     }
                 }

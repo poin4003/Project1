@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace QuanAn
 {
@@ -27,10 +28,33 @@ namespace QuanAn
         }
 
         private List<Food> FoodList = FoodDAO.Instance.LoadFoodWithFixedExtras();
+        private List<Food> uniqueFoodList = new List<Food>();
         public void LoadFood()
         {
+
             FoodList = FoodDAO.Instance.LoadFoodWithFixedExtras();
-            FoodDataGridView.DataSource = FoodList;
+            // Tạo danh sách mới để chứa các dòng không trùng lặp
+            uniqueFoodList.Clear();
+            ReadIntegersFromFile();
+            foreach (Food food in FoodList)
+            {
+                bool isDuplicate = false;
+                int maMN = food.MaMN;
+
+                // Kiểm tra xem MaMN có tồn tại trong danh sách numbers không
+                if (FoodListDeleted.Contains(maMN))
+                {
+                    isDuplicate = true;
+                }
+
+                // Nếu không trùng lặp, thêm dòng vào danh sách mới
+                if (!isDuplicate)
+                {
+                    uniqueFoodList.Add(food);
+                }
+            }
+            FoodDataGridView.DataSource = null;
+            FoodDataGridView.DataSource = uniqueFoodList;
             FoodDataGridView.Columns["MaMN"].Visible = false;
             FoodDataGridView.Columns["So_luong"].Visible = false;
             FoodDataGridView.Columns["Ghi_chu"].Visible = false;
@@ -73,7 +97,7 @@ namespace QuanAn
                 
                 if (selectedIndex >= 0 && selectedIndex < FoodList.Count)
                 {
-                    Food selectedFood = FoodList[selectedIndex];
+                    Food selectedFood = uniqueFoodList[selectedIndex];
 
                     // Sử dụng dữ liệu từ foodList
                     int maMN = selectedFood.MaMN;
@@ -94,14 +118,13 @@ namespace QuanAn
 
         private void AddFoodToFoodList()
         {
-            foreach (Food food in FoodList)
+            foreach (Food food in uniqueFoodList)
             {
                 string Ten_mon = food.Ten_mon;
                 FoodListName.Add(Ten_mon);
             }
         }
 
-        
         private void AddFoodButton_Click(object sender, EventArgs e)
         {
             if (isFirstClick)
@@ -125,7 +148,7 @@ namespace QuanAn
                     LoadFood();
                     FoodNameTb.Enabled = true;
                     PriceNud.Enabled = true;
-                    isFirstClick = false;
+                    isFirstClick = true;
                     ResetTb();
                 }
                 else
@@ -143,25 +166,72 @@ namespace QuanAn
                         FoodListName.Add(FoodNameTb.Text);
 
                         ResetTb();
-                        LoadFood();
+
                         FoodNameTb.Enabled = false;
                         PriceNud.Enabled = false;
                         isFirstClick = true;
+
                         if (UcDonHang.instance != null)
                         {
                             UcDonHang.instance.LoadFood();
                         }
                     }
+                    // Gọi lại hàm LoadFood để cập nhật dữ liệu hiển thị trên DataGridView
+                    LoadFood();
                 }
             }
         }
 
-        private void DeleteFoodButton_Click(object sender, EventArgs e)
+
+        List<int> FoodListDeleted = new List<int>();
+
+        private void ReadIntegersFromFile()
         {
+            string filePath = (Application.StartupPath + "\\File\\DeletedFoodList.txt");
+            FoodListDeleted.Clear();
+            try
+            {
+                string[] lines = File.ReadAllLines(filePath);
+
+                foreach (string line in lines)
+                {
+                    if (int.TryParse(line, out int number))
+                    {
+                        FoodListDeleted.Add(number);
+                    }
+                }
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Lỗi đọc tệp: " + ex.Message);
+            }
+        }
+
+        private async void DeleteFoodButton_Click(object sender, EventArgs e)
+        {
+            string filePath = (Application.StartupPath + "\\File\\DeletedFoodList.txt");
+        
+            try
+            {
+                await Task.Run(() =>
+                {
+                    using (StreamWriter sw = new StreamWriter(filePath, true)) // Chế độ ghi thêm (append)
+                    {
+                        sw.WriteLine(MaMN.ToString() + "\n");
+                    }
+                });
+
+                Console.WriteLine("Ghi tệp thành công!");
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Lỗi ghi tệp: " + ex.Message);
+            }
+
             if (MaMN != -1)
             {
                 // Xóa dữ liệu từ CSDL dựa trên MaMN
-                FoodDAO.Instance.DeleteFoodFromThucDon(MaMN);
+                //FoodDAO.Instance.DeleteFoodFromThucDon(MaMN);
 
                 // Tải lại danh sách thực đơn
                 LoadFood();

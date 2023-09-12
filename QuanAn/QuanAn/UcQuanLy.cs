@@ -403,6 +403,7 @@ namespace QuanAn
         List<DateTime> dateTimes = new List<DateTime>();
         private void GetCalendarList(int maNV)
         {
+            dateTimes.Clear();
             List<DTO.Calendar> calendars = CalendarDAO.Instance.GetCalendarByMaNV(maNV);
             foreach (DTO.Calendar calendar in calendars)
             {

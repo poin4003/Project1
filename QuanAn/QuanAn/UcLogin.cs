@@ -107,8 +107,8 @@ namespace QuanAn
                 {
                     LoginStatus = true;
                     StatusLb.Text = "Đã đăng nhập thành công, tài khoản " + username;
-                    //StatusLb.ForeColor = Color.FromArgb(0, 0, 255);
-                    StatusLb.ForeColor = Color.FromArgb(255, 153, 51);
+                    StatusLb.ForeColor = Color.FromArgb(0, 0, 255);
+                    //StatusLb.ForeColor = Color.FromArgb(255, 153, 51);
                     fQuanlyBanHang.instance.accountLb.Text = "Tài khoản: " + username;
                     fQuanlyBanHang.instance.accountLb.ForeColor = Color.FromArgb(0, 0, 0);
                     fQuanlyBanHang.instance.StaffPanel1.Enabled = true;
@@ -124,8 +124,8 @@ namespace QuanAn
                 {
                     LoginStatus = true;
                     StatusLb.Text = "Đã đăng nhập thành công, tài khoản " + username;
-                    //StatusLb.ForeColor = Color.FromArgb(0, 0, 255);
-                    StatusLb.ForeColor = Color.FromArgb(255, 153, 51);
+                    StatusLb.ForeColor = Color.FromArgb(0, 0, 255);
+                    //StatusLb.ForeColor = Color.FromArgb(255, 153, 51);
                     fQuanlyBanHang.instance.accountLb.Text = "Tài khoản: " + username;
                     fQuanlyBanHang.instance.accountLb.ForeColor = Color.FromArgb(0, 0, 0);
                     fQuanlyBanHang.instance.StaffPanel1.Enabled = true;
@@ -133,6 +133,7 @@ namespace QuanAn
                     UserNameCb.Enabled = false;
                     PasswordTb.Enabled = false;
                     UcThucDon.instance.LoadFood();
+                    UcDonHang.instance.LoadFood();
                 }
                 else
                 {

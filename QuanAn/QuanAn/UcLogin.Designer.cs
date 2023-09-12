@@ -54,7 +54,7 @@
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Controls.Add(this.flowLayoutPanel1);
-            this.panel1.Location = new System.Drawing.Point(30, 349);
+            this.panel1.Location = new System.Drawing.Point(24, 45);
             this.panel1.Margin = new System.Windows.Forms.Padding(6);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1726, 500);
@@ -117,7 +117,6 @@
             this.PasswordTb.PasswordChar = '*';
             this.PasswordTb.Size = new System.Drawing.Size(1002, 53);
             this.PasswordTb.TabIndex = 2;
-            this.PasswordTb.Text = "12345";
             // 
             // PasswordLb
             // 
@@ -172,10 +171,10 @@
             // pictureBox1
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Image = global::QuanAn.Properties.Resources.Project__2_;
+            this.pictureBox1.Image = global::QuanAn.Properties.Resources.z4686022611503_f09ae5b7808494bf34f81a91ff65d208;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1784, 1190);
+            this.pictureBox1.Size = new System.Drawing.Size(4460, 2975);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
