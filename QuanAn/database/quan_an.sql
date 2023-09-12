@@ -397,7 +397,7 @@ CREATE PROC USP_GetFoodListByOrderId
 @maDH INT
 AS 
 BEGIN 
-    SELECT td.Ten_mon, ctdh.MaMN
+    SELECT td.Ten_mon, ctdh.MaMN, ctdh.So_luong
     FROM ChiTietDonHang ctdh, ThucDon td
     WHERE ctdh.MaDH = @maDH AND ctdh.MaMN = td.MaMN
 END

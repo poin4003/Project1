@@ -128,6 +128,7 @@ namespace QuanAn
                     TotalMoneyTb.Text = tong_tien.ToString();
                     MoneyGivingByCustomerTb.Text = khach_dua.ToString();
                     ChangeTb.Text = tien_thua.ToString();
+                    
                     DataTable foods = FoodDAO.Instance.GetFoodListByMaDH(Convert.ToInt32(maDH));
                     FoodListLv.Items.Clear();
                     foreach (DataRow row in foods.Rows)
@@ -135,7 +136,7 @@ namespace QuanAn
                         //MessageBox.Show(row["ten_mon"].ToString());
                         ListViewItem ten_mon = new ListViewItem(row["ten_mon"].ToString());
                         ten_mon.SubItems.Add(row["MaMN"].ToString());
-                        //ten_mon.SubItems.Add(row["Soluong"].ToString());
+                        ten_mon.SubItems.Add(row["So_luong"].ToString());
                         FoodListLv.Items.Add(ten_mon);
                     }
                 }
