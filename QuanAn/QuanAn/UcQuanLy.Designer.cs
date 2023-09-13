@@ -448,6 +448,8 @@
             // CalendarStaffFilterCb
             // 
             this.CalendarStaffFilterCb.AutoSize = true;
+            this.CalendarStaffFilterCb.Checked = true;
+            this.CalendarStaffFilterCb.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CalendarStaffFilterCb.Location = new System.Drawing.Point(12, 1132);
             this.CalendarStaffFilterCb.Margin = new System.Windows.Forms.Padding(6);
             this.CalendarStaffFilterCb.Name = "CalendarStaffFilterCb";
@@ -625,6 +627,8 @@
             // SalaryStaffFilterCb
             // 
             this.SalaryStaffFilterCb.AutoSize = true;
+            this.SalaryStaffFilterCb.Checked = true;
+            this.SalaryStaffFilterCb.CheckState = System.Windows.Forms.CheckState.Checked;
             this.SalaryStaffFilterCb.Location = new System.Drawing.Point(12, 1132);
             this.SalaryStaffFilterCb.Margin = new System.Windows.Forms.Padding(6);
             this.SalaryStaffFilterCb.Name = "SalaryStaffFilterCb";

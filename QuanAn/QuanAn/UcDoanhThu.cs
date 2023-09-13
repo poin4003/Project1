@@ -86,12 +86,17 @@ namespace QuanAn
             LoadOrderByDay(formattedDate);
             float revenue = RevenueDAO.Instance.GetTotalRevenueOnDay(formattedDate);
             int countOfOrder = RevenueDAO.Instance.GetCountOfOrderOnDay(formattedDate);
-            NumberOfOrdersTb.Text = (countOfOrder - 1).ToString();
-            
-            if(revenue == -1)
+            if (revenue == -1)
+            {
                 MessageBox.Show("Ngày không có doanh thu", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
-            else
+                RevenueTb.Text = "";
+                NumberOfOrdersTb.Text = "";
+            }
+            else 
+            {
                 RevenueTb.Text = revenue.ToString();
+                NumberOfOrdersTb.Text = (countOfOrder - 1).ToString();
+            }
         }
 
         private void CalculateRevenueByMonthButton_Click(object sender, EventArgs e)
@@ -101,11 +106,17 @@ namespace QuanAn
             LoadOrderByMonth(formattedDate);
             float revenue = RevenueDAO.Instance.GetTotalRevenueOnMonth(formattedDate);
             int countOfOrder = RevenueDAO.Instance.GetCountOfOrderOnMonth(formattedDate);
-            NumberOfOrdersTb.Text = (countOfOrder - 1).ToString();           
             if (revenue == -1)
+            {
                 MessageBox.Show("Tháng không có doanh thu", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                RevenueTb.Text = "";
+                NumberOfOrdersTb.Text = "";
+            }
             else
+            {
                 RevenueTb.Text = revenue.ToString();
+                NumberOfOrdersTb.Text = (countOfOrder - 1).ToString();
+            }
         }
 
         private void OrderDataGridView_SelectionChanged(object sender, EventArgs e)

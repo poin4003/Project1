@@ -141,7 +141,7 @@ namespace QuanAn
 
             if (khach_dua < tong_tien)
             {
-                MessageBox.Show("Số tiền khách đưa không đủ để chốt đơn.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Số tiền khách đưa không đủ để chốt đơn.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
@@ -254,7 +254,7 @@ namespace QuanAn
             }
             else
             {
-                MessageBox.Show("Hãy chọn món trước khi thêm!", "Thông báo");
+                MessageBox.Show("Hãy chọn món trước khi thêm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -313,7 +313,7 @@ namespace QuanAn
             }
             else
             {
-                MessageBox.Show("Hãy chọn món trước khi xóa!", "Thông báo");
+                MessageBox.Show("Hãy chọn món trước khi xóa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

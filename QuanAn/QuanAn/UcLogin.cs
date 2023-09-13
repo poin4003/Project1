@@ -99,7 +99,7 @@ namespace QuanAn
             string password = PasswordTb.Text;
             if (username == "" || password == "")
             {
-                MessageBox.Show("Bạn đã nhập thiếu tài khoản hoặc mật khẩu. Vui lòng kiểm tra lại", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Bạn đã nhập thiếu mật khẩu. Vui lòng kiểm tra lại", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {

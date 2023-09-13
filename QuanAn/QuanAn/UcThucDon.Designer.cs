@@ -88,10 +88,10 @@
             this.MenuDisplayPanel.Controls.Add(this.label11);
             this.MenuDisplayPanel.Controls.Add(this.label10);
             this.MenuDisplayPanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MenuDisplayPanel.Location = new System.Drawing.Point(928, 64);
+            this.MenuDisplayPanel.Location = new System.Drawing.Point(928, 58);
             this.MenuDisplayPanel.Margin = new System.Windows.Forms.Padding(6);
             this.MenuDisplayPanel.Name = "MenuDisplayPanel";
-            this.MenuDisplayPanel.Size = new System.Drawing.Size(852, 988);
+            this.MenuDisplayPanel.Size = new System.Drawing.Size(852, 994);
             this.MenuDisplayPanel.TabIndex = 7;
             // 
             // FoodNameTb
