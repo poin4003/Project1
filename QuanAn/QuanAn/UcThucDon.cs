@@ -146,8 +146,8 @@ namespace QuanAn
                 {
                     MessageBox.Show("Tên món bị trùng", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     LoadFood();
-                    FoodNameTb.Enabled = true;
-                    PriceNud.Enabled = true;
+                    FoodNameTb.Enabled = false;
+                    PriceNud.Enabled = false;
                     isFirstClick = true;
                     ResetTb();
                 }

@@ -81,6 +81,7 @@ namespace QuanAn
             staffListForStaffDataGridView = dataSource;
 
             // Cập nhật DataGridView
+            //StaffDataGridView.DataSource = null;
             StaffDataGridView.DataSource = dataSource;
         }
 
@@ -98,6 +99,7 @@ namespace QuanAn
             staffListForCalendarDataGridView = dataSource;
 
             // Cập nhật DataGridView
+            //CalendarDataGridView.DataSource = null;
             CalendarDataGridView.DataSource = dataSource;
         }
 
@@ -115,12 +117,14 @@ namespace QuanAn
             staffListForSalaryDataGridView = dataSource;
 
             // Cập nhật DataGridView
+            //SalaryDataGridView.DataSource = null;
             SalaryDataGridView.DataSource = dataSource;
         }
 
         private void LoadDataForDataGridView(DataGridView dataGridView)
         {
             staffList = StaffDAO.Instance.LoadStaffList();
+            dataGridView.DataSource = null;
             dataGridView.DataSource = staffList;
 
             // Ẩn/hiện các cột cụ thể trong DataGridView
@@ -197,21 +201,29 @@ namespace QuanAn
             Initial,
             Editable
         }
+       
 
         private int MaNV = -1;        
         private bool isFirstClick = true;
         private void StaffDataGridView_SelectionChanged(object sender, EventArgs e)
         {
             DataGridView dataGridView = sender as DataGridView;
-            if(dataGridView.SelectedRows.Count > 0)
+            if (dataGridView.SelectedRows.Count > 0)
             {
                 DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
                 TurnReadOnlyControl(false);
                 isFirstClick = true;
-                int selectedIndex = selectedRow.Index;
-                if (selectedIndex >= 0 && selectedIndex < staffList.Count)
+
+                // Lấy giá trị từ cột HoTen và TrangThai của hàng được chọn
+                string selectedHoTen = selectedRow.Cells["HoTen"].Value?.ToString();
+                string selectedTrangThai = selectedRow.Cells["TrangThai"].Value?.ToString();
+
+                // Tìm nhân viên tương ứng trong danh sách dựa trên HoTen và TrangThai
+                Staff selectedStaff = staffList.FirstOrDefault(staff =>
+                    staff.HoTen == selectedHoTen && staff.TrangThai == selectedTrangThai);
+
+                if (selectedStaff != null)
                 {
-                    Staff selectedStaff = staffList[selectedIndex];
                     int MaNV = selectedStaff.MaNV;
                     string Ten_dang_nhap = selectedStaff.Ten_dang_nhap;
                     string Mat_khau = selectedStaff.Mat_khau;
@@ -223,23 +235,12 @@ namespace QuanAn
 
                     StaffIdTb.Text = MaNV.ToString();
                     StaffNameTb.Text = HoTen;
-                    if (MaCV == 1)
-                    {
-                        ManagerRadioButton.Checked = true;
-                    }
-                    else
-                    {
-                        StaffRadioButton.Checked = true;
-                    }
 
-                    if (Trang_thai == "Đang đi làm")
-                    {
-                        StillWorkingRadioButton.Checked = true;
-                    }
-                    else
-                    {
-                        StoppedWorkingRadioButton.Checked = true;
-                    }
+                    // Xử lý các RadioButton
+                    ManagerRadioButton.Checked = (MaCV == 1);
+                    StaffRadioButton.Checked = (MaCV != 1);
+                    StillWorkingRadioButton.Checked = (Trang_thai == "Đang đi làm");
+                    StoppedWorkingRadioButton.Checked = (Trang_thai != "Đang đi làm");
 
                     FirstDateAtWorkDtp.Value = Convert.ToDateTime(Ngay_dau_di_lam);
                     PhoneNumberTb.Text = Sdt;
@@ -381,25 +382,28 @@ namespace QuanAn
         private void CalendarDataGridView_SelectionChanged(object sender, EventArgs e)
         {
             DataGridView dataGridView = sender as DataGridView;
-            
+
             if (dataGridView.SelectedRows.Count > 0)
             {
                 DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
-                int selectedIndex = selectedRow.Index;
-                if (selectedIndex >= 0 && selectedIndex < staffList.Count)
-                {
-                    Staff selectedStaff = staffList[selectedIndex];
-                    int manv = selectedStaff.MaNV;
-                    string hoten = selectedStaff.HoTen;
-                    selectedMaNV = manv;
-                    WorkingHoursLb.Text = "Số giờ làm của nhân viên " + hoten;
-                    List<DTO.Calendar> calendars = CalendarDAO.Instance.GetCalendarByMaNV(manv);
+                string hoten = selectedRow.Cells["HoTen"].Value?.ToString();
+                int manv = 0;
+                int.TryParse(selectedRow.Cells["MaNV"].Value?.ToString(), out manv);
 
-                    UpdateNumberOfWorkingDaysListView(calendars);
+                // Kiểm tra nếu MaNV là 0 hoặc hoten là null hoặc trống, thì không tiếp tục
+                if (manv == 0 || string.IsNullOrEmpty(hoten))
+                {
+                    return;
                 }
+
+                selectedMaNV = manv;
+                WorkingHoursLb.Text = "Số giờ làm của nhân viên " + hoten;
+                List<DTO.Calendar> calendars = CalendarDAO.Instance.GetCalendarByMaNV(manv);
+
+                UpdateNumberOfWorkingDaysListView(calendars);
             }
         }
-        
+
         List<DateTime> dateTimes = new List<DateTime>();
         private void GetCalendarList(int maNV)
         {
@@ -500,35 +504,32 @@ namespace QuanAn
             DateTime selectedDate = MonthInputDtp.Value;
 
             if (selectedRow != null)
-            { 
-                int selectedIndex = selectedRow.Index;
-                if (selectedIndex >= 0 && selectedIndex < staffList.Count)
+            {
+                int MaNV = (int)selectedRow.Cells["MaNV"].Value;
+                string HoTen = selectedRow.Cells["HoTen"].Value.ToString();
+                string Trang_thai = selectedRow.Cells["TrangThai"].Value.ToString();
+                int MaCV = (int)selectedRow.Cells["MaCv"].Value;
+
+                string month = selectedDate.ToString("yyyy-MM-dd");
+                float totalWorkHours = CalendarDAO.Instance.GetTotalWorkHours(month, MaNV);
+                BasicSalary basicSalary = SalaryDAO.Instance.GetLuongTheoGioByMaCV(MaCV);
+                AdditionSalary additionSalary = SalaryDAO.Instance.GetLuongPhuByThangNhap(month);
+
+                if (MaCV == 1)
                 {
-                    Staff selectedStaff = staffList[selectedIndex];
-                    int MaNV = selectedStaff.MaNV;
-                    int MaCV = selectedStaff.MaCv;
-
-                    string month = selectedDate.ToString("yyyy-MM-dd");
-                    float totalWorkHours = CalendarDAO.Instance.GetTotalWorkHours(month, MaNV);
-                    BasicSalary basicSalary = SalaryDAO.Instance.GetLuongTheoGioByMaCV(MaCV);
-                    AdditionSalary additionSalary = SalaryDAO.Instance.GetLuongPhuByThangNhap(month);
-
-                    if (MaCV == 1)
-                    {
-                        ManagerSalaryRadioButton.Checked = true;
-                    }
-                    else
-                    {
-                        StaffSalaryRadioButton.Checked = true;
-                    }
-
-                    StaffsSalaryTb.Text = MaNV.ToString();
-                    HourlyTb.Text = basicSalary.LuongTheoGio.ToString();
-                    BonusSalaryTb.Text = additionSalary.LuongThuong.ToString();
-                    PenaltySalaryTb.Text = additionSalary.LuongPhat.ToString();
-                    TotalWorkHoursTb.Text = totalWorkHours.ToString();
-                    TotalSalaryTb.Text = (totalWorkHours * (basicSalary.LuongTheoGio + additionSalary.LuongThuong + additionSalary.LuongPhat)).ToString();
+                    ManagerSalaryRadioButton.Checked = true;
                 }
+                else
+                {
+                    StaffSalaryRadioButton.Checked = true;
+                }
+
+                StaffsSalaryTb.Text = MaNV.ToString();
+                HourlyTb.Text = basicSalary.LuongTheoGio.ToString();
+                BonusSalaryTb.Text = additionSalary.LuongThuong.ToString();
+                PenaltySalaryTb.Text = additionSalary.LuongPhat.ToString();
+                TotalWorkHoursTb.Text = totalWorkHours.ToString();
+                TotalSalaryTb.Text = (totalWorkHours * (basicSalary.LuongTheoGio + additionSalary.LuongThuong + additionSalary.LuongPhat)).ToString();
             }
         }
 
@@ -536,6 +537,7 @@ namespace QuanAn
         {
             UpdateControlsData();
         }
+
 
         private void MonthInputDtp_ValueChanged(object sender, EventArgs e)
         {

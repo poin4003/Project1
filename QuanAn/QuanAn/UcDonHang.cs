@@ -150,7 +150,7 @@ namespace QuanAn
                     Order order = OrderDAO.Instance.GetOrderWithIDMax();
                     foreach (ListViewItem item in OrderLv.Items)
                     {
-                        if (item.Text != "")
+                        if (ListName.ContainsKey(item.SubItems[1].Text))
                         {
                             FoodDAO.Instance.AddFoodToOrder(order.MaDH, GetMaMN(item), int.Parse(item.SubItems[2].Text), ListName[item.SubItems[1].Text], float.Parse(item.SubItems[4].Text));
                         }
