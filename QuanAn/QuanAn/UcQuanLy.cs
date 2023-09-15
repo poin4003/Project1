@@ -529,7 +529,7 @@ namespace QuanAn
                 BonusSalaryTb.Text = additionSalary.LuongThuong.ToString();
                 PenaltySalaryTb.Text = additionSalary.LuongPhat.ToString();
                 TotalWorkHoursTb.Text = totalWorkHours.ToString();
-                TotalSalaryTb.Text = (totalWorkHours * (basicSalary.LuongTheoGio + additionSalary.LuongThuong + additionSalary.LuongPhat)).ToString();
+                TotalSalaryTb.Text = (totalWorkHours * basicSalary.LuongTheoGio + additionSalary.LuongThuong - additionSalary.LuongPhat).ToString();
             }
         }
 

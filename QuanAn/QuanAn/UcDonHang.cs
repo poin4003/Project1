@@ -264,7 +264,7 @@ namespace QuanAn
             {
                 foreach (ListViewItem item in OrderLv.Items)
                 {
-                    if (ListName.ContainsKey(item.SubItems[1].Text))
+                    if (ListName.ContainsKey(item.SubItems[1].Text) && item.SubItems[1].Text == OrderLv.SelectedItems[0].SubItems[1].Text)
                     {
                         ListName.Remove(item.SubItems[1].Text);
                     }
